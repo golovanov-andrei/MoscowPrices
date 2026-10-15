@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MoscowPrices — стоимость квартир в Москве</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='moscow.css') }}">
+</head>
+<body>
+<header>
+    <h1>Поиск квартир в Москве</h1>
+    <p>Оценка стоимости квартиры с помощью машинного обучения</p>
+</header>
+<nav aria-label="Разделы сайта">
+    <ul class="tabs">
+        <li class="tab active" data-tab="home" role="button" tabindex="0">Главная</li>
+        <li class="tab" data-tab="search" role="button" tabindex="0">Поиск</li>
+        <li class="tab" data-tab="predictions" role="button" tabindex="0">Предсказания</li>
+        <li class="tab" data-tab="about" role="button" tabindex="0">О проекте</li>
+    </ul>
+</nav>
+<main>
+<section id="home" class="tab-content active">
+    <div class="home-hero">
+        <div class="home-text">
+            <h2>Поиск и оценка квартир в Москве</h2>
+            <p class="home-description">CatBoost оценивает стоимость квартиры по площади,
+                количеству комнат, этажу и расположению рядом с метро.</p>
+            <div class="how-it-works">
+                <h3>Как это работает</h3>
+                <ol>
+                    <li>Перейдите во вкладку «Поиск»</li>
+                    <li>Введите параметры квартиры и выберите станцию</li>
+                    <li>Получите примерную цену и посмотрите карту метро</li>
+                </ol>
+            </div>
+            <button class="cta-button" data-open-tab="search">Оценить квартиру</button>
+            <p class="demo-note">Учебный проект. Результат — ориентировочная оценка модели.</p>
+        </div>
+        <div class="home-image">
+            <img src="{{ url_for('static', filename='images/house.png') }}"
+                 alt="Интерьер квартиры" width="350" height="350">
+        </div>
+    </div>
+</section>
+
+<section id="search" class="tab-content">
+    <h2>Форма поиска квартиры</h2>
+    <p class="section-description">Введите характеристики квартиры для расчёта примерной стоимости.</p>
+    <form id="apartmentForm">
+        <label for="area">Площадь (м²)</label>
+        <input type="number" id="area" value="50" min="10" max="300" step="0.1" required>
+        <label for="rooms">Количество комнат</label>
+        <input type="number" id="rooms" value="2" min="1" max="10" step="1" required>
+        <label for="floor">Этаж</label>
+        <input type="number" id="floor" value="5" min="1" max="50" step="1" required>
+        <label for="minutes">Минуты до метро</label>
+        <input type="number" id="minutes" value="10" min="0" max="60" step="1" required>
+        <label for="metro">Станция метро</label>
+        <select id="metro" required disabled><option value="">Загрузка станций…</option></select>
+        <button type="submit" id="predictButton">Предсказать цену</button>
+        <p id="formError" class="form-error" role="alert" hidden></p>
+    </form>
+</section>
+
+<section id="predictions" class="tab-content">
+    <h2>Результат предсказания</h2>
+    <p id="predictionResult" class="prediction-result" aria-live="polite">Здесь появится цена квартиры</p>
+    <p id="predictionDetails" class="section-description"></p>
+    <p class="demo-note">Оценка рассчитана моделью и может отличаться от цены конкретного объявления.</p>
+    <section class="map-section">
+        <h3>Карта станций метро</h3>
+        <p class="section-description">Станции и относительный ценовой показатель из исходного анализа.</p>
+        <iframe src="/metro_map" title="Карта станций метро Москвы" height="520"></iframe>
+    </section>
+</section>
+
+<section id="about" class="tab-content">
+    <h2>О проекте</h2>
+    <p>Проект выполнил Голованов Андрей Сергеевич, группа 25-ПОз.</p>
+    <p>Ноутбук с анализом данных и модель CatBoost объединены с Flask-сайтом
+        из второй лабораторной работы Spring_2026.</p>
+    <p>Стек: Python · pandas · NumPy · CatBoost · Flask · HTML · CSS · JavaScript · Folium.</p>
+    <h3>Мои соцсети</h3>
+    <div class="socials">
+        <a href="https://t.me/andr3ikaG" target="_blank" rel="noopener" class="social-icon" aria-label="Telegram">
+            <img src="{{ url_for('static', filename='icons/telegram.svg') }}" alt="Telegram">
+        </a>
+        <a href="https://vk.com/agol0vanov" target="_blank" rel="noopener" class="social-icon" aria-label="VK">
+            <img src="{{ url_for('static', filename='icons/vk.svg') }}" alt="VK">
+        </a>
+    </div>
+</section>
+</main>
+<footer><p>© 2026 MoscowPrices · Андрей Голованов</p></footer>
+<script src="{{ url_for('static', filename='tabs.js') }}"></script>
+<script src="{{ url_for('static', filename='populate_metro.js') }}"></script>
+<script src="{{ url_for('static', filename='predict.js') }}"></script>
+</body>
+</html>
